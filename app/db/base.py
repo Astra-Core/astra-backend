@@ -5,6 +5,12 @@ import os
 
 DATABASE_URL = os.getenv("DATABASE_URI")
 
+if DATABASE_URL is None:
+    raise ValueError("No DATABASE_URI environment variable set")
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+
+Base.metadata.create_all(engine)
